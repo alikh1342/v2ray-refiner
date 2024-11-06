@@ -133,7 +133,7 @@ async function refineConfig(config, cleanIp, workerHost) {
   } else if (config.startsWith('trojan://')) {
     return refineTrojan(config, cleanIp, workerHost);
   } else {
-    throw new Error('Invalid config format. Please enter a valid vmess, vless or trojan config with WS+TLS and port 443 to proceed');
+    throw new Error('Invalid config format. Please enter a valid vmess, vless or trojan config with WS+TLS and port 2096 to proceed');
   }
 }
 
@@ -145,7 +145,7 @@ function refineVmess(config, cleanIp, workerHost) {
   // Check required fields
   if (decoded.net !== 'ws') throw new Error('Network must be WS');
   if (decoded.tls !== 'tls') throw new Error('Security must be TLS');
-  if (decoded.port !== '443') throw new Error('Port must be 443');
+  if (decoded.port !== '2096') throw new Error('Port must be 2096');
 
   // Update fields
   decoded.add = cleanIp; // Set clean IP for "address"
@@ -164,11 +164,11 @@ function refineVless(config, cleanIp, workerHost) {
   const url = new URL(config);
   if (url.searchParams.get('type') !== 'ws') throw new Error('Network must be WS');
   if (url.searchParams.get('security') !== 'tls') throw new Error('Security must be TLS');
-  if (url.port !== '443' && url.port !== '') throw new Error('Port must be 443'); // Accept empty port (default 443)
+  if (url.port !== '2096' && url.port !== '') throw new Error('Port must be 2096'); // Accept empty port (default 2096)
 
   // Update fields
   url.host = cleanIp; // Set clean IP for "address"
-  url.port = '443'; // Set port to 443
+  url.port = '2096'; // Set port to 2096
   const originalHost = url.searchParams.get('host') || ''; // Original host
   const originalPath = url.searchParams.get('path') || ''; // Original path
   url.searchParams.set('host', workerHost);
@@ -182,11 +182,11 @@ function refineTrojan(config, cleanIp, workerHost) {
   const url = new URL(config);
   if (url.searchParams.get('type') !== 'ws') throw new Error('Network must be WS');
   if (url.searchParams.get('security') !== 'tls') throw new Error('Security must be TLS');
-  if (url.port !== '443' && url.port !== '') throw new Error('Port must be 443'); // Accept empty port (default 443)
+  if (url.port !== '2096' && url.port !== '') throw new Error('Port must be 2096'); // Accept empty port (default 2096)
 
   // Update fields
   url.host = cleanIp; // Set clean IP for "address"
-  url.port = '443'; // Set port to 443
+  url.port = '2096'; // Set port to 2096
   const originalHost = url.searchParams.get('host') || ''; // Original host
   const originalPath = url.searchParams.get('path') || ''; // Original path
   url.searchParams.set('host', workerHost);
